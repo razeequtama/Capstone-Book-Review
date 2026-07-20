@@ -12,7 +12,7 @@ export async function getAllReviews()
 
 export async function getBookData(title)
 {
-    let titleEndpoint = title.toLowerCase().replaceAll(" ", "+");
+    let titleEndpoint = title.toLowerCase().replaceAll(" ", "+").trim();
     const bookData = await axios.get(`https://openlibrary.org/search.json?title=${titleEndpoint}`);
     return bookData.data;
 }
