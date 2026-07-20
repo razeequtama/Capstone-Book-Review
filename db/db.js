@@ -1,3 +1,4 @@
+// Database variable creation
 import pg from "pg";
 import dotenv from "dotenv";
 
