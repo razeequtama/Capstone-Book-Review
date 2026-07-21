@@ -9,5 +9,5 @@ export default new pg.Pool({
 	host: "localhost",
 	database: process.env.DB_DATABASE_NAME,
 	password: process.env.DB_PASSWORD,
-	port: 5432
+	port: 5433
 })

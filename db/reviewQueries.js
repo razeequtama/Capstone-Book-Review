@@ -11,7 +11,7 @@ export const GET_REVIEW_BY_ID = `
 `;
 
 export const TEST_REVIEWS = `
-    INSERT INTO book_reviews (book_name, stars, review)
+    INSERT INTO book_reviews (title, stars, review)
     VALUES 
         ('The Hobbit', 5, 'Great fantasy book! Amazing world-building.'),
         ('1984', 4, 'Very thought-provoking and dark, a masterpiece.'),
