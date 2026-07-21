@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import db from "./db/db.js";
 import reviewRouter from "./routes/reviewRoutes.js"
+import editRouter from "./routes/editRoutes.js"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,6 +29,7 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/", reviewRouter);
+app.use("/edit", editRouter);
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

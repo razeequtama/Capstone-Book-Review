@@ -16,6 +16,21 @@
                 <h2>Author: <%= d.author_name%></h2>
                 <p><%= d.review %></p>
                 <h3>Rate: <%= d.stars %>/5</h3>
+                <div class="action-buttons">
+                <div class="action-buttons">
+                <!-- Edit Button: Typically a GET request to a separate edit page -->
+                <form action="/edit/<%= d.id %>" method="GET" style="display:inline;">
+                    <button type="submit" class="btn-edit">Edit</button>
+                </form>
+
+                <!-- Delete Button: Typically a POST request (often overridden to DELETE) -->
+                <form action="/delete/<%= d.id %>" method="POST" style="display:inline;">
+                    <button type="submit" class="btn-delete" onclick=" return confirm('Are you sure?')">Delete</button>
+                </form>
+                </div>
+
+
+
             </div>
         <% }) %>
     </div>

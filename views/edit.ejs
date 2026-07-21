@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Rating</title>
+</head>
+<body>
+    <h1><%= editingData.title %></h1>
+    <form action="">
+        <label for="stars">Rate: </label><br><input type="number" name="stars" value="<%= editingData.stars %>" max="5" min="1"><br>
+        <label for="review">Review: </label><br><input type="text" name="review" value="<%= editingData.review %>"><br>
+    </form>
+</body>
+</html>

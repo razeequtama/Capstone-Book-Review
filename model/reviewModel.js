@@ -1,11 +1,18 @@
 // Functions to make the queries and return the result.
 import db from "../db/db.js";
-import { GET_ALL_REVIEWS } from '../db/reviewQueries.js'; 
+import { GET_ALL_REVIEWS, GET_REVIEW_BY_ID } from '../db/reviewQueries.js'; 
 import axios from "axios";
 
 export async function getAllReviews()
 {
     const result = await db.query(GET_ALL_REVIEWS);
+
+    return result;
+}
+
+export async function getReviewByID(id)
+{
+    const result = await db.query(GET_REVIEW_BY_ID, [id]);
 
     return result;
 }
