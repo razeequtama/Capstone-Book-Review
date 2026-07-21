@@ -28,8 +28,12 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/", reviewRouter);
+app.use("/reviews", reviewRouter);
 app.use("/edit", editRouter);
+
+app.get("/", (req, res) => {
+    res.redirect("/reviews");
+})
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
