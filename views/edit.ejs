@@ -1,20 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Rating</title>
-</head>
-<body>
-    <img src="<%= editingData.cover_url %>" alt="<%= editingData.title %> cover">
-    <h1><%= editingData.title %></h1>
-    <h2>Author: <%= editingData.author %></h2>
-    <form action="/edit/<%= editingData.id %>/post" method="POST">
-        <label for="stars">Rate: </label><br><input type="number" name="stars" value="<%= editingData.stars %>" max="5" min="1"><br>
-        <label for="review">Review: </label><br><input type="text" name="review" value="<%= editingData.review %>"><br>
-        <button type="submit">Confirm</button>
-        <a href="/">Cancel</a>
-    </form>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Book Rating</title>
+    </head>
+    <body>
+        <% if(locals.editingData) {%>
+            <img src="<%= editingData.cover_url %>" alt="<%= editingData.title %> cover">
+            <h1><%= editingData.title %></h1>
+            <h2>Author: <%= editingData.author %></h2>
+            <form action="/edit/<%= editingData.id %>/post" method="POST">
+                <label for="stars">Rate: </label>
+                <input type="number" name="stars" value="<%= editingData.stars %>" max="5" min="1"><br>
 
-</body>
+                <label for="review">Review: </label><br>
+                <input type="text" name="review" value="<%= editingData.review %>"><br>
+
+                <button type="submit">Confirm</button>
+                <a href="/">Cancel</a>
+            </form>
+        <% }else{ %>
+            <form action="/new/post" method="POST">
+                <label for="title">Title: </label>
+                <input type="text" id="title-input" value="" name="title" placeholder="insert book title..."><button type="button" id="find-image-btn">Find Image</button><br>
+                
+                <div id="image-preview-container" style="margin: 10px 0;">
+                    <img id="book-cover-img" src="" alt="Book Cover Preview" style="display: none; max-width: 200px;">
+                </div>
+                <input id="book-cover-img-value" name="cover_url" type="hidden" value="">
+
+                <label for="author">Author: </label>
+                <input type="text" id="author-name" name="author" value="" placeholder="Insert or click Find Image"><br>
+
+                <label for="stars">Rate: </label>
+                <input type="number" name="stars" value="3" max="5" min="1"><br>
+
+                <label for="review">Review: </label><br>
+                <input type="text" name="review" value="" placeholder="insert book review..."><br>
+
+                <button type="submit">Create</button>
+            </form>
+        <% } %>
+        <!-- Ensure type="module" is NOT used if you aren't using frontend bundlers, 
+             or just use a standard script tag since we removed the import statement -->
+        <script>
+            const findImageBtn = document.getElementById("find-image-btn");
+            const titleInput = document.getElementById("title-input");
+            const bookCoverImg = document.getElementById("book-cover-img");
+            const bookCoverImgValue = document.getElementById("book-cover-img-value");
+            const authorNameText = document.getElementById("author-name");
+
+            // Fungsi untuk mengubah teks menjadi Title Case (Huruf Kapital di Setiap Awal Kata)
+            function toTitleCase(str) {
+                if (!str) return "";
+                return str
+                    .toLowerCase()
+                    .split(' ')
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' ');
+            }
+
+
+            findImageBtn.addEventListener("click", async (e) => {
+                // Prevent form submission immediately
+                e.preventDefault();
+                
+                const titleInputValue = titleInput.value.trim(); 
+                
+                if (!titleInputValue) {
+                    alert("Please enter a title first!");
+                    return;
+                }
+
+                try {
+                    // 1. Matikan tombol dan ubah teksnya jadi loading
+                    findImageBtn.disabled = true;
+                    findImageBtn.innerText = "Searching...";
+                    
+                    // Call your newly created backend API route instead of the model file directly
+                    const response = await fetch(`/new/api/cover?title=${encodeURIComponent(titleInputValue)}`);
+                    
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+
+                    const data = await response.json();
+                    
+                    if (data.coverUrl) {
+                        bookCoverImg.src = data.coverUrl;
+                        bookCoverImg.style.display = "block"; 
+                        bookCoverImgValue.value = data.coverUrl;
+                        
+                    } else {
+                        alert("No image found for this title.");
+                    }
+                } catch (error) {
+                    console.error("Error fetching image from server:", error);
+                    alert("An error occurred while fetching the image.");
+                } finally {
+                    // 2. Blok ini AKAN SELALU JALAN setelah try atau catch selesai.
+                    // Menyalakan kembali tombol dan mengembalikan teks aslinya.
+                    findImageBtn.disabled = false;
+                    findImageBtn.innerText = "Find Image";
+                    titleInput.value = toTitleCase(titleInputValue);
+                }
+
+                try {
+                    // 1. Matikan tombol dan ubah teksnya jadi loading
+                    
+                    // Call your newly created backend API route instead of the model file directly
+                    const authorResponse = await fetch(`/new/api/author?title=${encodeURIComponent(titleInputValue)}`);
+                    
+                    if (!authorResponse.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+
+                    const authorData = await authorResponse.json();
+                    
+                    if (authorData.authorName) {
+                        authorNameText.value = authorData.authorName;
+                        
+                    } else {
+                        alert("No author name found for this title.");
+                    }
+                } catch (error) {
+                    console.error("Error fetching author name from server:", error);
+                    alert("An error occurred while fetching the author's name.");
+                }
+            });
+
+        </script>
+    </body>
 </html>

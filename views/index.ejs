@@ -6,6 +6,7 @@
     <title>Book Rating</title>
 </head>
 <body>
+    <a href="/new">Create Review</a>
     <div class="container">
         <% let num = 1; %>
         <% data.forEach(d => { %>
@@ -24,11 +25,7 @@
                     </form>
 
                     <a href="/delete/<%= d.id %>" onclick=" return confirm('Are you sure?')">Delete</a>
-
                 </div>
-
-
-
             </div>
         <% }) %>
     </div>
