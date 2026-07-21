@@ -2,8 +2,9 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import db from "./db/db.js";
-import reviewRouter from "./routes/reviewRoutes.js"
-import editRouter from "./routes/editRoutes.js"
+import reviewRouter from "./routes/reviewRoutes.js";
+import editRouter from "./routes/editRoutes.js";
+import deleteRouter from "./routes/deleteRoutes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/reviews", reviewRouter);
 app.use("/edit", editRouter);
+app.use("/delete", deleteRouter);
 
 app.get("/", (req, res) => {
     res.redirect("/reviews");
