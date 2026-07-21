@@ -67,7 +67,7 @@ This project will be built incrementally.
 
 ### Version 1
 (Started at: 7/19/2026)
-(Completed at: On Progress)
+(Completed at: 7/21/2026)
 
 * Basic CRUD functionality
 * User enters a book title manually
@@ -76,22 +76,20 @@ This project will be built incrementally.
 
 ### Version 2
 (Started at: 7/21/2026)
-(Completed at: On Progress)
+(Completed at: 7/21/2026)
 
 
 * Display the book cover automatically
 
 ### Version 3
 (Started at: 7/21/2026)
-(Completed at: On Progress)
-
+(Completed at: 7/21/2026)
 
 * Display the author's name
 
 ### Version 4
 (Started at: -)
 (Completed at: -)
-
 
 * Autocomplete search while typing
 * Users can select the intended book from search suggestions
