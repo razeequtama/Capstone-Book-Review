@@ -7,9 +7,11 @@
 </head>
 <body>
     <h1><%= editingData.title %></h1>
-    <form action="">
+    <h2>Author: <%= editingData.author %></h2>
+    <form action="/edit/<%= editingData.id %>/post" method="POST">
         <label for="stars">Rate: </label><br><input type="number" name="stars" value="<%= editingData.stars %>" max="5" min="1"><br>
         <label for="review">Review: </label><br><input type="text" name="review" value="<%= editingData.review %>"><br>
+        <button type="submit">Edit</button>
     </form>
 </body>
 </html>

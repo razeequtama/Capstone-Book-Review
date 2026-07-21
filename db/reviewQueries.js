@@ -1,7 +1,8 @@
 // Query names so it's easy to use.
 export const GET_ALL_REVIEWS = `
     SELECT *
-    FROM book_reviews;
+    FROM book_reviews
+    ORDER BY id;
 `;
 
 export const GET_REVIEW_BY_ID = `

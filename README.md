@@ -133,6 +133,117 @@ book-ratings/
 
 ---
 
+# CRUD Feature
+
+## Edit Review Function
+
+The EDIT function allows users to modify an existing book review and rating stored in the database.
+
+### How it works
+
+1. **Opening the edit page**
+
+When a user selects the edit option for a review, the review ID is passed through the URL:
+
+```
+GET /edit/:id
+```
+
+The controller receives the ID and retrieves the matching review from the database using:
+
+```js
+getReviewByID(id)
+```
+
+The retrieved review data is then passed to the `edit.ejs` template. The form displays the current title, author, review text, and star rating, allowing the user to update the existing information.
+
+2. **Submitting the edited review**
+
+After the user changes the review details, the form sends a POST request:
+
+```
+POST /edit/:id/post
+```
+
+The submitted data contains:
+
+* `review` → updated review text
+* `stars` → updated star rating
+* `id` → the review ID from the URL
+
+Example:
+
+```html
+<form action="/edit/<%= editingData.id %>/post" method="POST">
+```
+
+3. **Updating the database**
+
+The controller receives the updated information:
+
+```js
+const review = req.body.review;
+const stars = req.body.stars;
+const id = req.params.id;
+```
+
+It then calls:
+
+```js
+editReviewFinish(review, stars, id)
+```
+
+The model executes an SQL UPDATE query:
+
+```sql
+UPDATE book_reviews
+SET review = $1,
+    stars = $2
+WHERE id = $3;
+```
+
+The values are passed using PostgreSQL parameterized queries:
+
+```js
+db.query(EDIT_SPECIFIC_REVIEW, [review, stars, id])
+```
+
+This ensures that only the selected review is updated and helps protect against SQL injection.
+
+4. **Finishing the edit process**
+
+After the database update is successful, the user is redirected back to the homepage:
+
+```js
+res.redirect("/");
+```
+
+The updated review will then appear with the rest of the reviews.
+
+### EDIT Function Flow
+
+```
+User clicks Edit
+        ↓
+GET /edit/:id
+        ↓
+Retrieve review data from database
+        ↓
+Display existing review in edit form
+        ↓
+User modifies review/rating
+        ↓
+POST /edit/:id/post
+        ↓
+Update review in book_reviews table
+        ↓
+Redirect to homepage
+        ↓
+Updated review is displayed
+```
+
+---
+
 ## Future Improvements
 
 Some features I may add in later iterations include:

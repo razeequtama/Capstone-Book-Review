@@ -10,9 +10,7 @@ export default async function getAllReviews(req, res) {
         const enrichmentPromises = data.map(async (d) => {
             try {
                 let book_info = await getBookData(d.title);
-                let author_info = book_info.docs[0].author_name[0];
-                d.author_name = author_info;
-                
+
                 let cover_id = book_info.docs[0].cover_i;
                 d.cover_image = `https://covers.openlibrary.org/b/id/${cover_id}-M.jpg`;
             } catch (error) {
