@@ -1,4 +1,4 @@
-// The route
+// The route ("/reviews")
 import express from "express";
 import getAllReviews from "../controller/reviewController.js";
 

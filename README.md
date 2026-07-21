@@ -75,15 +75,15 @@ This project will be built incrementally.
 * Save review to PostgreSQL
 
 ### Version 2
-(Started at: -)
-(Completed at: -)
+(Started at: 7/21/2026)
+(Completed at: On Progress)
 
 
 * Display the book cover automatically
 
 ### Version 3
-(Started at: -)
-(Completed at: -)
+(Started at: 7/21/2026)
+(Completed at: On Progress)
 
 
 * Display the author's name
