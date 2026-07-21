@@ -11,7 +11,7 @@
         <% data.forEach(d => { %>
             <div class="rating-container">
                 <p><%= num++ %></p>
-                <img src="<%= d.cover_image %>" alt="<%= d.title %> cover">
+                <img src="<%= d.cover_url %>" alt="<%= d.title %> cover">
                 <h1><%= d.title %></h1>
                 <h2>Author: <%= d.author%></h2>
                 <h3>Rate: <%= d.stars %>/5</h3>
