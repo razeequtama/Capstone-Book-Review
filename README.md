@@ -1,4 +1,4 @@
-# Book Ratings
+# Book Review
 
 A simple full stack CRUD web application where users can search for books, view their covers from the Open Library API, and keep track of their own ratings and reviews.
 
