@@ -23,3 +23,10 @@ export async function getBookData(title)
     const bookData = await axios.get(`https://openlibrary.org/search.json?title=${titleEndpoint}`);
     return bookData.data;
 }
+
+export async function getBookTitleSuggestions(title, limit = 5)
+{
+    let titleEndpoint = title.toLowerCase().replaceAll(" ", "+").trim();
+    const bookData = await axios.get(`https://openlibrary.org/search.json?title=${titleEndpoint}&limit=${limit}`);
+    return bookData.data.docs.slice(0, limit);
+}

@@ -474,6 +474,56 @@ h3 {
   flex-shrink: 0;
 }
 
+.input-with-suggestions {
+  position: relative;
+  width: 100%;
+}
+
+.suggestions-list {
+  display: none;
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  right: 0;
+  top: calc(100% + 8px);
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+  overflow: hidden;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.suggestion-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: 12px 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--color-text);
+}
+
+.suggestion-item:hover,
+.suggestion-item:focus {
+  background: #f8fafc;
+  outline: none;
+}
+
+.suggestion-title {
+  font-weight: 600;
+}
+
+.suggestion-author {
+  font-size: 0.92rem;
+  color: #6b7280;
+}
+
+
 .form-actions {
   display: flex;
   gap: 12px;

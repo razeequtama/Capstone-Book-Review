@@ -65,13 +65,17 @@
                     <div class="form-group">
                         <label class="form-label" for="title-input">Title</label>
                         <div class="input-row">
-                            <input
-                                type="text"
-                                class="form-input"
-                                id="title-input"
-                                name="title"
-                                placeholder="Insert book title..."
-                            >
+                            <div class="input-with-suggestions">
+                                <input
+                                    type="text"
+                                    class="form-input"
+                                    id="title-input"
+                                    name="title"
+                                    placeholder="Insert book title..."
+                                    autocomplete="off"
+                                >
+                                <div id="title-suggestions" class="suggestions-list" aria-live="polite"></div>
+                            </div>
                             <button type="button" class="btn btn-secondary" id="find-image-btn">
                                 Find Image
                             </button>
@@ -164,6 +168,111 @@
             const bookCoverImgValue = document.getElementById("book-cover-img-value");
 
             const authorNameText = document.getElementById("author-name");
+            const suggestionsContainer = document.getElementById("title-suggestions");
+            let suggestionTimer = null;
+
+            function clearTitleSuggestions() {
+                suggestionsContainer.innerHTML = "";
+                suggestionsContainer.style.display = "none";
+            }
+
+            function renderTitleSuggestions(items) {
+                clearTitleSuggestions();
+                if (!items || !items.length) {
+                    return;
+                }
+
+                suggestionsContainer.style.display = "block";
+
+                items.forEach(item => {
+                    const button = document.createElement("button");
+                    button.type = "button";
+                    button.className = "suggestion-item";
+                    button.dataset.title = item.title;
+                    button.dataset.author = item.author || "";
+
+                    const titleLabel = document.createElement("span");
+                    titleLabel.className = "suggestion-title";
+                    titleLabel.textContent = item.title;
+                    button.appendChild(titleLabel);
+
+                    if (item.author) {
+                        const authorLabel = document.createElement("span");
+                        authorLabel.className = "suggestion-author";
+                        authorLabel.textContent = item.author;
+                        button.appendChild(authorLabel);
+                    }
+
+                    suggestionsContainer.appendChild(button);
+                });
+            }
+
+            async function fetchTitleSuggestions(query) {
+                if (!query || query.length < 3) {
+                    clearTitleSuggestions();
+                    return;
+                }
+
+                const currentQuery = query;
+
+                try {
+                    const response = await fetch(`/new/api/suggestions?title=${encodeURIComponent(query)}&limit=6`);
+                    if (!response.ok) {
+                        clearTitleSuggestions();
+                        return;
+                    }
+
+                    const data = await response.json();
+                    if (titleInput.value.trim() !== currentQuery) {
+                        return;
+                    }
+
+                    renderTitleSuggestions(data.suggestions || []);
+                } catch (error) {
+                    clearTitleSuggestions();
+                }
+            }
+
+            titleInput.addEventListener("input", () => {
+                clearTimeout(suggestionTimer);
+                const query = titleInput.value.trim();
+
+                if (query.length < 3) {
+                    clearTitleSuggestions();
+                    return;
+                }
+
+                suggestionTimer = setTimeout(() => fetchTitleSuggestions(query), 250);
+            });
+
+            titleInput.addEventListener("keydown", (event) => {
+                if (event.key === "Escape") {
+                    clearTitleSuggestions();
+                }
+            });
+
+            titleInput.addEventListener("blur", () => {
+                setTimeout(clearTitleSuggestions, 120);
+            });
+
+            suggestionsContainer.addEventListener("click", async (event) => {
+                const button = event.target.closest(".suggestion-item");
+                if (!button) {
+                    return;
+                }
+
+                titleInput.value = button.dataset.title;
+                if (button.dataset.author) {
+                    authorNameText.value = button.dataset.author;
+                }
+                bookCoverImg.style.display = "none";
+                bookCoverImg.src = "";
+                bookCoverImgValue.value = "";
+                clearTitleSuggestions();
+
+                // Automatically fetch the cover and author for the selected suggestion
+                findImageBtn.click();
+            });
 
             function toTitleCase(str) {
                 if (!str) return "";
