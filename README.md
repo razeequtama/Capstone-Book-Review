@@ -109,17 +109,30 @@ This project will be built incrementally.
 book-ratings/
 │
 ├── public/
-│   ├── css/
-│   └── js/
-│
+│   └── style.css
 │
 ├── controller/
+│   ├── deleteController.js
+│   ├── editController.js
+│   ├── newReviewController.js
+│   └── reviewController.js
 │
 ├── db/
+│   ├── db.js
+│   ├── deleteQueries.js
+│   ├── editQueries.js
+│   ├── newReviewQueries.js
+│   └── reviewQueries.js
 │
 ├── model/
+│   ├── deleteModel.js
+│   ├── editModel.js
+│   ├── newReviewModel.js
+│   └── reviewModel.js
 │
 ├── views/
+│   ├── edit.ejs
+│   └── index.ejs
 │
 ├── package-lock.json
 ├── package.json
