@@ -4,31 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Rating</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <a href="/new">Create Review</a>
     <div class="container">
-        <% let num = 1; %>
-        <% data.forEach(d => { %>
-            <div class="rating-container">
-                <p><%= num++ %></p>
-                <img src="<%= d.cover_url %>" alt="<%= d.title %> cover">
-                <h1><%= d.title %></h1>
-                <h2>Author: <%= d.author%></h2>
-                <h3>Rate: <%= d.stars %>/5</h3>
-                <p><%= d.review %></p>
 
-                <div class="action-buttons">
-                    <!-- Edit Button: Typically a GET request to a separate edit page -->
-                    <form action="/edit/<%= d.id %>" method="GET" style="display:inline;">
-                        <button type="submit" class="btn-edit">Edit</button>
-                    </form>
-
-                    <a href="/delete/<%= d.id %>" onclick=" return confirm('Are you sure?')">Delete</a>
-                </div>
+        <header class="page-header">
+            <div class="page-header__text">
+                <h1 class="page-title">Your Library</h1>
+                <p class="page-subtitle">Every book you&apos;ve read, rated, and reviewed.</p>
             </div>
-        <% }) %>
-    </div>
+            <a href="/new" class="btn btn-primary btn-lg">
+                <span class="btn-icon" aria-hidden="true">+</span>
+                Create Review
+            </a>
+        </header>
 
+        <% if (data && data.length > 0) { %>
+
+            <div class="reviews-grid">
+                <% let num = 1; %>
+                <% data.forEach(d => { %>
+                    <article class="review-card">
+                        <span class="review-card__index"><%= num++ %></span>
+
+                        <div class="review-card__cover">
+                            <img src="<%= d.cover_url %>" alt="<%= d.title %> cover">
+                        </div>
+
+                        <div class="review-card__body">
+                            <div class="review-card__header">
+                                <h1 class="review-card__title"><%= d.title %></h1>
+                                <h2 class="review-card__author"><%= d.author %></h2>
+                            </div>
+
+                            <div class="rating" aria-label="Rated <%= d.stars %> out of 5">
+                                <span class="rating__stars" aria-hidden="true"><%
+                                    for (let i = 1; i <= 5; i++) {
+                                        if (i <= d.stars) { %><span class="star star--filled">&#9733;</span><% }
+                                        else { %><span class="star star--empty">&#9733;</span><% }
+                                    }
+                                %></span>
+                                <span class="rating__value"><%= d.stars %>/5</span>
+                            </div>
+
+                            <p class="review-card__review"><%= d.review %></p>
+
+                            <div class="action-buttons">
+                                <!-- Edit Button: Typically a GET request to a separate edit page -->
+                                <form action="/edit/<%= d.id %>" method="GET">
+                                    <button type="submit" class="btn btn-outline btn-block">Edit</button>
+                                </form>
+
+                                <a href="/delete/<%= d.id %>" class="btn btn-danger" onclick=" return confirm('Are you sure?')">Delete</a>
+                            </div>
+                        </div>
+                    </article>
+                <% }) %>
+            </div>
+
+        <% } else { %>
+
+            <div class="empty-state">
+                <div class="empty-state__icon" aria-hidden="true">&#128218;</div>
+                <h1 class="empty-state__title">No reviews yet</h1>
+                <p class="empty-state__text">Start building your personal library by adding your first book review.</p>
+                <a href="/new" class="btn btn-primary btn-lg">Create Review</a>
+            </div>
+
+        <% } %>
+
+    </div>
 </body>
 </html>
